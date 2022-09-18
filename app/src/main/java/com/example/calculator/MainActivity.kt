@@ -12,9 +12,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var prevText: TextView
     private lateinit var signText: TextView
 
-    private lateinit var commaButton: Button
-
-    
+    private lateinit var digitAndCommaButtons: Array<Button>
+    private lateinit var signButtons: Array<Button>
 
     private val maxQuantitySign: Int = 9
     private val crowdedAnnotation: String = "ПЕРЕПОЛНЕНО"
@@ -28,38 +27,46 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         prevText = findViewById(R.id.prevText)
         signText = findViewById(R.id.signText)
 
-        commaButton = findViewById(R.id.commaButton)
+        digitAndCommaButtons = arrayOf(
+            findViewById(R.id.commaButton),
+            findViewById(R.id.oneButton),
+            findViewById(R.id.twoButton),
+            findViewById(R.id.threeButton),
+            findViewById(R.id.fourButton),
+            findViewById(R.id.fiveButton),
+            findViewById(R.id.sixButton),
+            findViewById(R.id.sevenButton),
+            findViewById(R.id.eightButton),
+            findViewById(R.id.nineButton),
+            findViewById(R.id.zeroButton),
+        )
+
+        signButtons = arrayOf(
+            findViewById(R.id.clearButton),
+            findViewById(R.id.changeSignButton),
+            findViewById(R.id.divisionButton),
+            findViewById(R.id.percentButton),
+            findViewById(R.id.multipleButton),
+            findViewById(R.id.minusButton),
+            findViewById(R.id.plusButton),
+            findViewById(R.id.equalButton),
+        )
 
         // Присваивание листнеров
-        findViewById<Button>(R.id.oneButton).setOnClickListener(this)
-        findViewById<Button>(R.id.twoButton).setOnClickListener(this)
-        findViewById<Button>(R.id.threeButton).setOnClickListener(this)
-        findViewById<Button>(R.id.fourButton).setOnClickListener(this)
-        findViewById<Button>(R.id.fiveButton).setOnClickListener(this)
-        findViewById<Button>(R.id.sixButton).setOnClickListener(this)
-        findViewById<Button>(R.id.sevenButton).setOnClickListener(this)
-        findViewById<Button>(R.id.eightButton).setOnClickListener(this)
-        findViewById<Button>(R.id.nineButton).setOnClickListener(this)
-        findViewById<Button>(R.id.zeroButton).setOnClickListener(this)
+        for (digitAndCommaButton in digitAndCommaButtons) {
+            digitAndCommaButton.setOnClickListener(this)
+        }
 
-        findViewById<Button>(R.id.clearButton).setOnClickListener(this)
-
-        commaButton.setOnClickListener(this)
-
-        findViewById<Button>(R.id.changeSignButton).setOnClickListener(this)
-
-        findViewById<Button>(R.id.divisionButton).setOnClickListener(this)
-        findViewById<Button>(R.id.percentButton).setOnClickListener(this)
-        findViewById<Button>(R.id.multipleButton).setOnClickListener(this)
-        findViewById<Button>(R.id.minusButton).setOnClickListener(this)
-        findViewById<Button>(R.id.plusButton).setOnClickListener(this)
-
-        findViewById<Button>(R.id.equalButton).setOnClickListener(this)
+        for (signButton in signButtons) {
+            signButton.setOnClickListener(this)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     override fun onClick(view: View?) {
         when (view?.id ?: return) {
+            R.id.commaButton -> { addCommaToNumber() }
+
             R.id.oneButton -> { getNewNumber((view as TextView).text as String) }
             R.id.twoButton -> { getNewNumber((view as TextView).text as String) }
             R.id.threeButton -> { getNewNumber((view as TextView).text as String) }
@@ -73,8 +80,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             R.id.clearButton -> { clearLine() }
 
-            R.id.commaButton -> { addCommaToNumber() }
-
             R.id.changeSignButton -> { changeSignToNumber() }
 
             R.id.divisionButton -> { chooseSecondNumber((view as TextView).text as String) }
@@ -87,7 +92,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    // Костыльное производство
+    // Внутрение функции
     @SuppressLint("SetTextI18n")
     private fun getNewNumber(buttonText: String) {
         if(currentText.text.toString() == crowdedAnnotation){
@@ -102,17 +107,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun clearLine() {
         currentText.text = ""
-        commaButton.isClickable = true
+        digitAndCommaButtons[0].isClickable = true
     }
 
     @SuppressLint("SetTextI18n")
     private fun addCommaToNumber() {
         if(currentText.text.toString() == "" || currentText.text.toString() == crowdedAnnotation){
             currentText.text = currentText.text.toString() + "0."
+            digitAndCommaButtons[0].isClickable = false
         }else{
             if(currentText.text.toString().length < maxQuantitySign) {
                 currentText.text = currentText.text.toString() + "."
-                commaButton.isClickable = false
+                digitAndCommaButtons[0].isClickable = false
             } else {
                 currentText.text = crowdedAnnotation
             }
@@ -138,7 +144,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             prevText.text = currentText.text
             signText.text = buttonText
             currentText.text = ""
-
+            digitAndCommaButtons[0].isClickable = true
         } else {
             if (currentText.text != "") {
                 calculate()
