@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun chooseSecondNumber(buttonText: String) {
-        if (currentText.text != "" && prevText.text == ""){
+        if ((currentText.text != "" && currentText.text.toString() != crowdedAnnotation) && prevText.text == ""){
             if(currentText.text[currentText.text.lastIndex] == '.'){
                 currentText.text = currentText.text.toString().substringBefore('.')
             }
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             currentText.text = ""
             digitAndCommaButtons[0].isClickable = true
         } else {
-            if (currentText.text != "") {
+            if (currentText.text != "" && currentText.text.toString() != crowdedAnnotation) {
                 calculate()
                 chooseSecondNumber(buttonText)
             }
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun equalSign() {
-        if(currentText.text != "" && prevText.text != "" && signText.text != "") {
+        if(currentText.text != "" && currentText.text.toString() != crowdedAnnotation && prevText.text != "" && signText.text != "") {
             calculate()
             clearSignAndPrevNumber()
         }
