@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 clearSignAndPrevNumber()
                 pasteAnswerInCurrentText((prevNumber / (currentNumber / 100)).toString())
             }
-            "x" -> {
+            "*" -> {
                 clearSignAndPrevNumber()
                 pasteAnswerInCurrentText((prevNumber * currentNumber).toString())
             }
